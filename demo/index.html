@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+
+<link rel="stylesheet" href="assets/style.css">
+
+<title> password-check </title>
+
+<h1> password-check </h1>
+
+<form>
+
+<password-check>
+
+  <template shadowrootmode="open">
+    <slot></slot>
+    <output></output>
+    <ul>
+      <li data-test="uppercase:1">One uppercase</li>
+      <li data-test="lowercase:1">One lowercase</li>
+      <li data-test="minlength:8">Min 8 characters</li>
+      <li data-test="special:1" data-pattern=",\.\-_$%">One special character</li>
+      <li data-test="number:1">One number</li>
+    </ul>
+  </template>
+
+  <label>Password <input type="password" name="password" required><label>
+  <button name="showButton" type="button">show</button>
+</password-check>
+
+<p>
+  <button type="submit">Submit</button>
+  <button type="reset">Reset</button>
+</p>
+</form>
+
+
+<script type="importmap">
+{
+  "imports": {
+    "password-check": "../src/password-check.js"
+  }
+}
+</script>
+
+<script type="module" src="app.js"></script>
+
+</html>

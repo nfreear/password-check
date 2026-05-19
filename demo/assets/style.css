@@ -1,0 +1,27 @@
+
+password-check {
+  &::part(cond):before {
+    content: ' ';
+    display: inline-block;
+    width: 1.5rem;
+  }
+
+  &::part(met):before {
+    content: '✔️';
+  }
+
+  &::part(unmet):before {
+    content: '×';
+  }
+}
+
+input,
+button[ type = submit ],
+button[ type = reset ] {
+  font-size: larger;
+  padding: .2rem 1rem;
+}
+
+form {
+  line-height: 1.5;
+}
