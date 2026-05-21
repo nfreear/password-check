@@ -1,12 +1,15 @@
 const { HTMLElement } = globalThis;
 
+// Source: gh:deanilvincent/check-password-strength
+const owaspSymbols = "!\"#$%&'()*+,-./\\:;<=>?@[]^_`{|}~";
+
 export default class PasswordCheckElement extends HTMLElement {
   #testRegex = /^(uppercase|lowercase|minlength|special|number):(\d+)$/;
   #regexes = {
     lowercase: /^[a-z]*$/,
     uppercase: /^[A-Z]*$/,
     number: /^[0-9]*$/,
-    special: '._$%\-'
+    special: ';.,$%_-'
   };
   #conditions = [];
 
@@ -65,7 +68,7 @@ export default class PasswordCheckElement extends HTMLElement {
     console.debug('password-check:', [this]);
   }
 
-  reset () {
+  reset (event) {
     this.#conditions.forEach((condition) => {
       condition.count = 0;
       condition.met = false;
@@ -78,8 +81,11 @@ export default class PasswordCheckElement extends HTMLElement {
   }
 
   #onInput (event) {
+    // const { inputType } = event;
     const candidate = event.target.value.trim();
     const chars = candidate.split('');
+
+    this.reset();
 
     this.#conditions.forEach((condition) => {
       const { pattern, name, min, el } = condition;

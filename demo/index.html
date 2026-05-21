@@ -14,12 +14,12 @@
 
   <template shadowrootmode="open">
     <slot></slot>
-    <output></output>
-    <ul>
+    <output part="output"></output>
+    <ul part="ul list">
       <li data-test="uppercase:1">One uppercase</li>
       <li data-test="lowercase:1">One lowercase</li>
       <li data-test="minlength:8">Min 8 characters</li>
-      <li data-test="special:1" data-pattern=",\.\-_$%">One special character</li>
+      <li data-test="special:1" data-pattern=";.,$%_-">One special character</li>
       <li data-test="number:1">One number</li>
     </ul>
   </template>
@@ -38,7 +38,11 @@
 <script type="importmap">
 {
   "imports": {
-    "password-check": "../src/password-check.js"
+    "escape-string-regexp": "https://unpkg.com/escape-string-regexp",
+    "check-password-strength": "https://unpkg.com/check-password-strength/dist/index.mjs",
+    "@edgeguideab/password-check/": "https://unpkg.com/@edgeguideab/password-check/",
+    "zxcvbn": "https://unpkg.com/zxcvbn@4.4.2/dist/zxcvbn.js",
+    "local:password-check": "../src/password-check.js"
   }
 }
 </script>

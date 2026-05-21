@@ -1,13 +1,30 @@
 
 password-check {
+  &::part(cond) {
+    margin: .3rem 0;
+  }
+
   &::part(cond):before {
     content: ' ';
     display: inline-block;
-    width: 1.5rem;
+    margin-right: .3rem;
+    text-align: center;
+    width: 1.3rem;
+  }
+
+  &::part(met) {
+    color: #5f5; /* green */
   }
 
   &::part(met):before {
+    background-color: #ddd;
+    border-radius: .3rem;
+    color: black;
     content: '✔️';
+  }
+
+  &::part(unmet) {
+    color: pink;
   }
 
   &::part(unmet):before {
@@ -19,9 +36,23 @@ input,
 button[ type = submit ],
 button[ type = reset ] {
   font-size: larger;
+  max-width: 12rem;
   padding: .2rem 1rem;
 }
 
+input {
+  padding: .2rem .5rem;
+}
+
 form {
-  line-height: 1.5;
+  line-height: 1.4;
+}
+
+body {
+  background-color: #222;
+  color: #eee;
+  font-family: sans-serif;
+  margin: auto;
+  max-width: 32rem;
+  padding: 0 1rem;
 }

@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "exports": {
+    ".": "src/password-check.js",
+    "./common": "src/util/common.json"
+  },
+  "devDependencies": {
+    "servor": "^4.0.2"
+  },
+  "scripts": {
+    "start": "servor"
+  }
+}
