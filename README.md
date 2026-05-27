@@ -1,6 +1,8 @@
 
 # password-check
 
+> Experimental — not for production!
+
 A custom HTML element `<password-check>` to feed back to the user the strength of a potential password.
 
 ## Usage
@@ -10,7 +12,6 @@ Example HTML:
 <password-check>
   <template shadowrootmode="open">
     <slot></slot>
-    <output></output>
     <ul>
       <li data-test="uppercase:1">One uppercase</li>
       <li data-test="lowercase:1">One lowercase</li>
@@ -20,9 +21,15 @@ Example HTML:
     </ul>
   </template>
 
-  <label>Password <input type="password"><label>
+  <label>Password
+    <input type="password" autocomplete="new-password" aria-describedby="outputID">
+  <label>
+  <output id="outputID"></output>
 </password-check>
 ```
+
+* CDN: https://esm.sh/gh/nfreear/password-check
+* Pen: https://codepen.io/nfreear/pen/ogYGKJY
 
 ## Useful resources
 

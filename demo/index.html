@@ -14,7 +14,7 @@
 
   <template shadowrootmode="open">
     <slot></slot>
-    <output part="output"></output>
+    <!-- <output part="output sr-only"></output> -->
     <ul part="ul list">
       <li data-test="uppercase:1">One uppercase</li>
       <li data-test="lowercase:1">One lowercase</li>
@@ -24,8 +24,11 @@
     </ul>
   </template>
 
-  <label>Password <input type="password" name="password" required><label>
+  <label>Password
+    <input type="password" name="password" autocomplete="new-password" aria-describedby="outputID" required>
+  </label>
   <button name="showButton" type="button">show</button>
+  <output id="outputID"></output>
 </password-check>
 
 <p>
@@ -42,6 +45,8 @@
     "check-password-strength": "https://unpkg.com/check-password-strength/dist/index.mjs",
     "@edgeguideab/password-check/": "https://unpkg.com/@edgeguideab/password-check/",
     "zxcvbn": "https://unpkg.com/zxcvbn@4.4.2/dist/zxcvbn.js",
+    "@zxcvbn-ts/core": "https://esm.sh/@zxcvbn-ts/core",
+    "local:zxcvbn": "../zxcvbn/index.js",
     "local:password-check": "../src/password-check.js"
   }
 }

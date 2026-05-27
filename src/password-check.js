@@ -3,6 +3,10 @@ const { HTMLElement } = globalThis;
 // Source: gh:deanilvincent/check-password-strength
 const owaspSymbols = "!\"#$%&'()*+,-./\\:;<=>?@[]^_`{|}~";
 
+/**
+ * A custom HTML element to feed back to the user the strength of a potential password.
+ * @customElement password-check
+ */
 export default class PasswordCheckElement extends HTMLElement {
   #testRegex = /^(uppercase|lowercase|minlength|special|number):(\d+)$/;
   #regexes = {
@@ -15,9 +19,10 @@ export default class PasswordCheckElement extends HTMLElement {
 
   get met () { return this.#conditions.filter(({ met }) => met).length; }
   get unmet () { return this.#conditions.length - this.met; }
+  get total () { return this.#conditions.length; }
 
   get #inputElement () { return this.querySelector('input[ type = password ]'); }
-  get #outputElement () { return this.shadowRoot.querySelector('output'); }
+  get #outputElement () { return this.querySelector('output'); } // Was: shadowRoot.
   get #listContainer () { return this.shadowRoot.querySelector('ul'); }
   get #conditionElements () { return this.#listContainer.querySelectorAll('li[ data-test ]'); }
 
@@ -57,6 +62,7 @@ export default class PasswordCheckElement extends HTMLElement {
 
   #expectations () {
     console.assert(this.#inputElement, 'Missing <input type=password> child element');
+    console.assert(this.#outputElement, 'Missing <output> child element');
   }
 
   connectedCallback () {
@@ -75,7 +81,7 @@ export default class PasswordCheckElement extends HTMLElement {
       condition.el.setAttribute('part', 'cond');
     });
 
-    this.#outputElement.value = `met: ${this.met}; unmet: ${this.unmet}`;
+    this.#updateOutput();
 
     console.debug('reset:', this.met, this.unmet, this.#conditions, event);
   }
@@ -87,28 +93,31 @@ export default class PasswordCheckElement extends HTMLElement {
 
     this.reset();
 
-    this.#conditions.forEach((condition) => {
-      const { pattern, name, min, el } = condition;
-      if (name === 'minlength') {
-        if (candidate.length > min) {
-          condition.count = 1;
-          condition.met = true;
-        }
-      } else {
-        const match = chars.find((char) => pattern.test(char));
-        condition.count += match ? 1 : 0;
-        condition.met = condition.count >= min;
-      }
-      // console.debug(name, match, pattern);
+    this.#conditions.forEach((cond) => this.#testCondition(cond, candidate, chars));
 
-      el.setAttribute('part', `cond ${condition.met ? 'met' : 'unmet'}`);
-    });
-
-    // const met = this.#conditions.filter(({ met }) => met);
-    // const unmet = this.#conditions.filter(({ met }) => !met);
-
-    this.#outputElement.value = `met: ${this.met}; unmet: ${this.unmet}`;
+    this.#updateOutput();
 
     console.debug('input:', candidate, this.met, this.unmet, this.#conditions, event);
+  }
+
+  #testCondition (condition, candidate, chars) {
+    const { pattern, name, min, el } = condition;
+    if (name === 'minlength') {
+      if (candidate.length > min) {
+        condition.count = 1;
+        condition.met = true;
+      }
+    } else {
+      const match = chars.find((char) => pattern.test(char));
+      condition.count += match ? 1 : 0;
+      condition.met = condition.count >= min;
+    }
+    // console.debug(name, match, pattern);
+
+    el.setAttribute('part', `cond ${condition.met ? 'met' : 'unmet'}`);
+  }
+
+  #updateOutput () {
+    this.#outputElement.value = `${this.met} of ${this.total} conditions met`;
   }
 }

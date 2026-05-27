@@ -1,9 +1,11 @@
 
 password-check {
+  &[part *= cond],
   &::part(cond) {
     margin: .3rem 0;
   }
 
+  &[part *= cond]:before,
   &::part(cond):before {
     content: ' ';
     display: inline-block;
@@ -12,23 +14,27 @@ password-check {
     width: 1.3rem;
   }
 
+  &[part *= ' met'],
   &::part(met) {
     color: #5f5; /* green */
   }
 
+  &[part *= ' met']:before,
   &::part(met):before {
     background-color: #ddd;
     border-radius: .3rem;
     color: black;
-    content: '✔️';
+    content: '✔️' / 'met'; /* CSS text alternative. */
   }
 
+  &[part *= unmet],
   &::part(unmet) {
     color: pink;
   }
 
+  &[part *= unmet]:before,
   &::part(unmet):before {
-    content: '×';
+    content: '×' / 'unmet'; /* CSS text alternative. */
   }
 }
 
@@ -40,8 +46,22 @@ button[ type = reset ] {
   padding: .2rem 1rem;
 }
 
+[ name = showButton ] {
+  min-width: 3rem;
+}
+
 input {
   padding: .2rem .5rem;
+}
+
+output {
+  background-color: #444;
+  outline: 1px solid gray;
+  border-radius: .1rem;
+  display: inline-block;
+  min-height: 1rem;
+  min-width: 1rem;
+  padding: 0 .2rem;
 }
 
 form {
@@ -55,4 +75,25 @@ body {
   margin: auto;
   max-width: 32rem;
   padding: 0 1rem;
+}
+
+* {
+  outline-offset: .2rem;
+}
+
+/* See: https://www.a11y-collective.com/blog/visually-hidden/
+   Alias: sr-only "screen reader only"
+*/
+.visually-hidden,
+.sr-only,
+::part(sr-only),
+sr-only {
+  border: 0;
+  clip-path: inset(50%);
+  height: 1px;
+  margin: 0;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 }
