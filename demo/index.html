@@ -10,48 +10,42 @@
 
 <form>
 
-<password-check>
+  <password-check>
+    <label>Password
+      <input type="password" name="password" autocomplete="new-password" aria-describedby="outputID listID" required>
+    </label>
+    <button name="showButton" type="button">show</button>
+    <output id="outputID"></output>
 
-  <template shadowrootmode="open">
-    <slot></slot>
-    <!-- <output part="output sr-only"></output> -->
-    <ul part="ul list">
+    <ul id="listID">
       <li data-test="uppercase:1">One uppercase</li>
       <li data-test="lowercase:1">One lowercase</li>
       <li data-test="minlength:8">Min 8 characters</li>
       <li data-test="special:1" data-pattern=";.,$%_-">One special character</li>
       <li data-test="number:1">One number</li>
     </ul>
-  </template>
+  </password-check>
 
-  <label>Password
-    <input type="password" name="password" autocomplete="new-password" aria-describedby="outputID" required>
-  </label>
-  <button name="showButton" type="button">show</button>
-  <output id="outputID"></output>
-</password-check>
-
-<p>
-  <button type="submit">Submit</button>
-  <button type="reset">Reset</button>
-</p>
+  <p>
+    <button type="submit">Submit</button>
+    <button type="reset">Reset</button>
+  </p>
 </form>
 
 
 <script type="importmap">
 {
   "imports": {
-    "escape-string-regexp": "https://unpkg.com/escape-string-regexp",
-    "check-password-strength": "https://unpkg.com/check-password-strength/dist/index.mjs",
-    "@edgeguideab/password-check/": "https://unpkg.com/@edgeguideab/password-check/",
-    "zxcvbn": "https://unpkg.com/zxcvbn@4.4.2/dist/zxcvbn.js",
-    "@zxcvbn-ts/core": "https://esm.sh/@zxcvbn-ts/core",
-    "local:zxcvbn": "../zxcvbn/index.js",
-    "local:password-check": "../src/password-check.js"
+    "password-check": "../src/password-check.js",
+    "password-check/app": "./app.js"
   }
 }
 </script>
 
-<script type="module" src="app.js"></script>
+<script type="module">
+  import demoApp from 'password-check/app';
+
+  demoApp(true);
+</script>
 
 </html>

@@ -10,21 +10,18 @@ A custom HTML element `<password-check>` to feed back to the user the strength o
 Example HTML:
 ```html
 <password-check>
-  <template shadowrootmode="open">
-    <slot></slot>
-    <ul>
-      <li data-test="uppercase:1">One uppercase</li>
-      <li data-test="lowercase:1">One lowercase</li>
-      <li data-test="minlength:8">Min 8 characters</li>
-      <li data-test="special:1" data-pattern=";.,$%_-">One special character</li>
-      <li data-test="number:1">One number</li>
-    </ul>
-  </template>
-
   <label>Password
-    <input type="password" autocomplete="new-password" aria-describedby="outputID">
-  <label>
+    <input type="password" autocomplete="new-password" aria-describedby="outputID listID">
+  </label>
   <output id="outputID"></output>
+
+  <ul id="listID">
+    <li data-test="uppercase:1">One uppercase</li>
+    <li data-test="lowercase:1">One lowercase</li>
+    <li data-test="minlength:8">Min 8 characters</li>
+    <li data-test="special:1" data-pattern=";.,$%_-">One special character</li>
+    <li data-test="number:1">One number</li>
+  </ul>
 </password-check>
 ```
 

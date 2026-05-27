@@ -1,15 +1,6 @@
-import commonPasswords from '@edgeguideab/password-check/passwords.json' with {type:'json'};
-import { passwordStrength } from 'check-password-strength';
-// import 'zxcvbn';
-// import zxcvbn from 'local:zxcvbn';
-import { zxcvbn } from '@zxcvbn-ts/core';
-import PasswordCheckElement from 'local:password-check';
+import PasswordCheckElement from '../src/password-check.js';
 
-// console.debug('Common passwords:', commonPasswords.list);
-
-demoApp();
-
-function demoApp () {
+export default function demoApp (showHide = false) {
   customElements.define('password-check', PasswordCheckElement);
 
   const FORM = document.querySelector('form');
@@ -26,27 +17,18 @@ function demoApp () {
     passwordCheck.reset(ev);
   });
 
-  FORM.elements.showButton.addEventListener('click', (ev) => {
+  if (showHide) {
+    showHidePassword(FORM);
+  }
+}
+
+export function showHidePassword (FORM) {
+  const showButton = FORM.elements.showButton;
+
+  showButton.addEventListener('click', (ev) => {
     ev.preventDefault();
     const isPassword = FORM.elements.password.type === 'password';
     FORM.elements.password.type = isPassword ? 'text' : 'password';
-    FORM.elements.showButton.textContent = isPassword ? 'hide' : 'show';
+    showButton.textContent = isPassword ? 'hide' : 'show';
   });
-
-  FORM.elements.password.addEventListener('input', (ev) => {
-    const password = ev.target.value;
-
-    const result = passwordStrength(password);
-    // console.debug('strength:', result);
-
-    const resultZ = zxcvbn(password);
-    // console.debug('zxcvbn:', resultZ);
-  });
-}
-
-/** @see https://github.com/dropbox/zxcvbn#readme
- */
-function zxcvbnGlobal (password, user_inputs = []) {
-  const zxcvbnFunction = globalThis.zxcvbn;
-  return zxcvbnFunction(password, user_inputs);
 }

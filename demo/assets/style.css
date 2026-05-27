@@ -1,12 +1,12 @@
 
 password-check {
-  &[part *= cond],
+  [part *= cond],
   &::part(cond) {
     margin: .3rem 0;
   }
 
-  &[part *= cond]:before,
-  &::part(cond):before {
+  [part *= cond]::before,
+  &::part(cond)::before {
     content: ' ';
     display: inline-block;
     margin-right: .3rem;
@@ -14,26 +14,26 @@ password-check {
     width: 1.3rem;
   }
 
-  &[part *= ' met'],
+  [part *= ' met'],
   &::part(met) {
     color: #5f5; /* green */
   }
 
-  &[part *= ' met']:before,
-  &::part(met):before {
+  [part *= ' met']::before,
+  &::part(met)::before {
     background-color: #ddd;
     border-radius: .3rem;
     color: black;
     content: '✔️' / 'met'; /* CSS text alternative. */
   }
 
-  &[part *= unmet],
+  [part *= unmet],
   &::part(unmet) {
     color: pink;
   }
 
-  &[part *= unmet]:before,
-  &::part(unmet):before {
+  [part *= unmet]::before,
+  &::part(unmet)::before {
     content: '×' / 'unmet'; /* CSS text alternative. */
   }
 }
@@ -44,6 +44,10 @@ button[ type = reset ] {
   font-size: larger;
   max-width: 12rem;
   padding: .2rem 1rem;
+
+  &.X[ aria-invalid = true ] {
+    border-color: red;
+  }
 }
 
 [ name = showButton ] {

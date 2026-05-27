@@ -11,10 +11,6 @@
     "zxcvbn": "^4.4.2"
   },
   "scripts": {
-    "build:to-esm:OLD:2": "to-esm --config=zxcvbn/to-esm.config.js",
-    "build:ts2esm": "ts2esm ./zxcvbn/tsconfig.json",
-    "build:to-esm": "to-esm --input=\"node_modules/zxcvbn/lib/*.js\" --output=zxcvbn/esm/ --entrypoint=node_modules/zxcvbn/lib/main.js",
-    "build:coffee": "coffee --compile --output lib/ node_modules/zxcvbn/src/",
     "start": "servor"
   }
 }

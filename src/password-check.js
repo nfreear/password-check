@@ -17,13 +17,19 @@ export default class PasswordCheckElement extends HTMLElement {
   };
   #conditions = [];
 
+  get value () { return this.#inputElement.value.trim(); }
   get met () { return this.#conditions.filter(({ met }) => met).length; }
   get unmet () { return this.#conditions.length - this.met; }
   get total () { return this.#conditions.length; }
 
-  get #inputElement () { return this.querySelector('input[ type = password ]'); }
-  get #outputElement () { return this.querySelector('output'); } // Was: shadowRoot.
-  get #listContainer () { return this.shadowRoot.querySelector('ul'); }
+  get valid () { return this.unmet === 0; }
+
+  // Experimental!
+  get #root () { return this.shadowRoot ?? this; }
+
+  get #inputElement () { return this.#root.querySelector('input[ type = password ]'); }
+  get #outputElement () { return this.#root.querySelector('output'); } // Was: shadowRoot.
+  get #listContainer () { return this.#root.querySelector('ul'); }
   get #conditionElements () { return this.#listContainer.querySelectorAll('li[ data-test ]'); }
 
   #getConditions () {
@@ -63,6 +69,8 @@ export default class PasswordCheckElement extends HTMLElement {
   #expectations () {
     console.assert(this.#inputElement, 'Missing <input type=password> child element');
     console.assert(this.#outputElement, 'Missing <output> child element');
+    console.assert(this.#listContainer, 'Missing <ul> list container');
+    console.assert(this.#conditionElements.length, 'Expecting a least one <li> condition element');
   }
 
   connectedCallback () {
@@ -88,22 +96,22 @@ export default class PasswordCheckElement extends HTMLElement {
 
   #onInput (event) {
     // const { inputType } = event;
-    const candidate = event.target.value.trim();
-    const chars = candidate.split('');
+    const chars = this.value.split('');
 
     this.reset();
 
-    this.#conditions.forEach((cond) => this.#testCondition(cond, candidate, chars));
+    this.#conditions.forEach((cond) => this.#testCondition(cond, chars));
 
+    this.#inputElement.setAttribute('aria-invalid', !this.valid);
     this.#updateOutput();
 
-    console.debug('input:', candidate, this.met, this.unmet, this.#conditions, event);
+    console.debug('input:', this.value, this.met, this.unmet, this.#conditions, event);
   }
 
-  #testCondition (condition, candidate, chars) {
+  #testCondition (condition, chars) {
     const { pattern, name, min, el } = condition;
     if (name === 'minlength') {
-      if (candidate.length > min) {
+      if (this.value.length > min) {
         condition.count = 1;
         condition.met = true;
       }
@@ -112,12 +120,11 @@ export default class PasswordCheckElement extends HTMLElement {
       condition.count += match ? 1 : 0;
       condition.met = condition.count >= min;
     }
-    // console.debug(name, match, pattern);
 
     el.setAttribute('part', `cond ${condition.met ? 'met' : 'unmet'}`);
   }
 
   #updateOutput () {
-    this.#outputElement.value = `${this.met} of ${this.total} conditions met`;
+    this.#outputElement.value = `${this.met} of ${this.total} conditions met.`;
   }
 }
